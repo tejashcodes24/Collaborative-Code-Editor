@@ -2,13 +2,14 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { setTheme, setCurrentFile, closeFile } from '../redux/slices/editorSlice';
-import { FaPlay, FaCode, FaUsers, FaTimes } from 'react-icons/fa';
+import { FaPlay, FaCode, FaUsers, FaTimes, FaRobot } from 'react-icons/fa';
 
 const Header = () => {
   const dispatch = useDispatch();
   const { currentFile, openFiles, unsavedChanges, selectedTheme } = useSelector((state) => state.editor);
   const themes = ['vs-dark', 'light', 'hc-black'];
   const roomId = "1q2w3e4r5t6y"; // Replace with actual room ID from your state
+  const [aiEnabled, setAiEnabled] = React.useState(false);
 
   const handleThemeChange = (e) => {
     const newTheme = e.target.value;
@@ -54,6 +55,19 @@ const Header = () => {
 
         {/* Right section */}
         <div className="flex items-center gap-4">
+          {/* AI Feature Toggle */}
+          <motion.div 
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center gap-2 bg-[#132F4C] px-4 py-2 rounded-lg border border-[#1E4976] cursor-pointer"
+            onClick={() => setAiEnabled(!aiEnabled)}
+          >
+            <FaRobot className={`text-sm ${aiEnabled ? 'text-green-400' : 'text-gray-400'}`} />
+            <span className="text-white text-sm">AI Assistant</span>
+            <div className={`relative w-8 h-4 rounded-full transition-colors duration-200 ${aiEnabled ? 'bg-green-500' : 'bg-gray-600'}`}>
+              <div className={`absolute w-3 h-3 bg-white rounded-full top-0.5 transition-transform duration-200 ${aiEnabled ? 'left-4' : 'left-0.5'}`} />
+            </div>
+          </motion.div>
+
           {/* Room ID */}
           <div className="flex items-center gap-2 bg-[#132F4C] px-4 py-2 rounded-lg border border-[#1E4976]">
             <FaUsers className="text-blue-400" />
